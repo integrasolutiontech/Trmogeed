@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>تحويل العملة</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  
+  <style>
+    body {
+      background-color: #f8f9fa;
+    }
+    .container {
+      max-width: 400px;
+      margin: 50px auto;
+      background-color: #ffffff;
+      padding: 20px;
+      border-radius: 5px;
+      box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.1);
+    }
+    h1, h2 {
+      color: #28a745;
+    }
+  </style>
+</head>
+<body>
+  <nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <a class="navbar-brand" href="#">تطبيق الضريبة وتحويل العملات</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" id="navbarNav">
+    <ul class="navbar-nav ml-auto">
+      <li class="nav-item active">
+        <a class="nav-link" href="index.html">الضريبة</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="currency.html">تغيير العملات</a>
+      </li>
+    </ul>
+  </div>
+</nav>
+
+  <div class="container">
+    <h1>تحويل العملة</h1>
+    <form id="currencyForm">
+      <div class="form-group">
+        <label for="amount">المبلغ:</label>
+        <input type="number" class="form-control" id="amount" required>
+      </div>
+      <div class="form-group">
+        <label for="currency">العملة:</label>
+        <select class="form-control" id="currency">
+          <option value="USD">الدولار الأمريكي (USD)</option>
+           <!-- وأضف المزيد من العملات حسب الحاجة -->
+        </select>
+      </div>
+      <button type="submit" class="btn btn-success">تحويل</button>
+    </form>
+    <div id="result" style="display: none;">
+      <h2>النتيجة:</h2>
+      <p id="convertedAmount"></p>
+    </div>
+  </div>
+  <script>
+    document.getElementById('currencyForm').addEventListener('submit', function(event) {
+      event.preventDefault();
+      var amount = parseFloat(document.getElementById('amount').value);
+      var currency = document.getElementById('currency').value;
+
+      var exchangeRates = {
+        USD: 30.77, // سعر صرف الدولار الأمريكي
+       
+        // وأضف المزيد من العملات وأسعار الصرف حسب الحاجة
+      };
+
+      var exchangeRate = exchangeRates[currency];
+      var convertedAmount = amount * exchangeRate;
+      document.getElementById('convertedAmount').textContent = convertedAmount.toFixed(2) + ' EGP';
+      document.getElementById('result').style.display = 'block';
+    });
+  </script>
+   <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+</body>
+</html>
