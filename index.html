@@ -18,22 +18,21 @@
     .card-title {
       margin-top: 20px;
     }
-    h1, h2 {
+    h1, h2 ,h6 {
       color: #28a745;
     }
-
   </style>
 </head>
 <body>
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
-  <a class="navbar-brand" href="#">تطبيق الضريبة وتحويل العملات</a>
+  <a class="navbar-brand" href="#"><span class="btn btn-danger">قريباا</span>  ارخص شحنة</a>
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
   </button>
   <div class="collapse navbar-collapse" id="navbarNav">
     <ul class="navbar-nav ml-auto">
-       <li class="nav-item active">
-        <a class="nav-link" href="index.html">الرئيسية</a>
+      <li class="nav-item active">
+        <a class="nav-link" href="index.html">تخليص</a>
       </li>
       <li class="nav-item active">
         <a class="nav-link" href="dareba.html">الضريبة</a>
@@ -44,15 +43,78 @@
     </ul>
   </div>
 </nav>
-  <br>
+<br>
 
-
+<div class="container">
+  <div class="row">
+    <div class="col-md-6 offset-md-3">
+      <h3>تخليص الألعاب</h3>
+      <div class="form-group">
+        <label for="game">اختر لعبة:</label>
+        <select class="form-control" id="game" onchange="toggleDollarInput()">
+          <option value="game1">فري فاير</option>
+          <option value="game2">ببجي موبايل</option>
+          
+        </select>
+      </div>
+      <div class="form-group" id="dollarsInput" style="display: none;">
+        <label for="dollars">عدد الدولارات:</label>
+        <input type="number" class="form-control" id="dollars" placeholder="أدخل عدد الدولارات">
+      </div>
+      <div class="form-group" id="pricesDropdown">
+        <label for="prices">قيم أسعار اللعبة:</label>
+        <select class="form-control">
+          <option value="2">عضوية اسبوعية</option>
+          <option value="3">عضوية شهرية</option>
+          <option value="4">دروب واحد دولار</option>
+        </select>
+      </div>
+      <button type="button" class="btn btn-success" onclick="calculatePrice()">حساب السعر</button>
+      <div id="price"></div>
+    </div>
+  </div>
+</div>
+<center>
+<h6>ملحوظة هامة : قد تمت اضافة ضريبة علي بعض الالعاب من قبل البنوك نرجو منكم تفهم الامر</h6></center>
+<script>
+  function toggleDollarInput() {
+    var game = document.getElementById("game").value;
+    var dollarsInput = document.getElementById("dollarsInput");
+    var pricesDropdown = document.getElementById("pricesDropdown");
+    
+    if (game === "game1") {
+      dollarsInput.style.display = "none";
+      pricesDropdown.style.display = "block";
+    } else {
+      dollarsInput.style.display = "block";
+      pricesDropdown.style.display = "none";
+    }
+  }
   
-  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
-  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
-  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  function calculatePrice() {
+    var game = document.getElementById("game").value;
+    var dollars;
+    var price = 0;
+    
+    if (game === "game1") {
+      var pricesDropdown = document.getElementById("prices");
+      price = pricesDropdown.value * 1;
+    } else {
+      dollars = document.getElementById("dollars").value;
+      
+      if (game === "game2") {
+        price = dollars * 25; // تعيين قاعدة السعر للعبة 2
+      } else if (game === "game3") {
+        price = dollars * 4; // تعيين قاعدة السعر للعبة 3
+      }
+    }
+    
+    document.getElementById("price").innerHTML = " EGP " + price + " ";
+  }
+</script>
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 </html>
