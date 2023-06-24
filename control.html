@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>إضافة عنصر جديد</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <style>
+    body {
+      background-color: #f8f9fa;
+    }
+    .container {
+      max-width: 800px;
+      margin: 50px auto;
+    }
+    .card {
+      text-align: center;
+    }
+    .card-title {
+      margin-top: 20px;
+    }
+    h1, h2 {
+      color: #28a745;
+    }
+  </style>
+</head>
+<body>
+  <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <a class="navbar-brand" href="#">ارخص شحنة</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav ml-auto">
+        <li class="nav-item active">
+          <a class="nav-link" href="dareba.html">تخليص</a>
+        </li>
+        <li class="nav-item active">
+          <a class="nav-link" href="index.html">الضريبة</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="currency.html">تغيير العملات</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="control.html">نظام الادارة </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="contact.html">المطورين</a>
+        </li>
+      </ul>
+    </div>
+  </nav>
+  <div class="container">
+    <div class="row">
+      <div class="col-md-6 offset-md-3">
+        <h3>نظام ادارة التراستيد</h3>
+        <div class="form-group">
+          <label for="itemName">اسم الباقة:</label>
+          <input type="text" class="form-control" id="itemName">
+        </div>
+        <div class="form-group">
+          <label for="itemPrice">سعر الباقة:</label>
+          <input type="number" class="form-control" id="itemPrice">
+        </div>
+        <div class="form-group">
+          <label for="quantity">الكمية:</label>
+          <input type="number" class="form-control" id="quantity">
+        </div>
+        <div class="form-group">
+          <label for="cost">التكلفة:</label>
+          <input type="number" class="form-control" id="cost">
+        </div>
+        <button type="button" class="btn btn-success" onclick="addItem()">إضافة الباقة</button>
+      </div>
+    </div>
+    <div class="row mt-5">
+      <div class="col-md-12">
+        <h3>البيانات المحفوظة</h3>
+        <div class="table-responsive">
+          <table class="table">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>اسم الباقة</th>
+                <th>السعر</th>
+                <th>الكمية</th>
+                <th>التكلفة + الضريبة</th>
+                <th>الربح</th>
+              </tr>
+            </thead>
+            <tbody id="itemList"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+    <div class="row mt-5">
+      <div class="col-md-12">
+        <center>
+        <button type="button" class="btn btn-primary" onclick="calculateTotalProfit()">احسب مجموع الأرباح</button>
+        <br>
+        <h4 id="totalProfit">مجموع الأرباح </h4>
+      </center>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // استعادة البيانات من localStorage عند تحميل الصفحة
+    window.onload = function() {
+      var savedItems = localStorage.getItem("items");
+      if (savedItems) {
+        var items = JSON.parse(savedItems);
+        displayItems(items);
+      }
+    }
+    
+    function addItem() {
+      var itemName = document.getElementById("itemName").value;
+      var itemPrice = parseFloat(document.getElementById("itemPrice").value);
+      var quantity = parseFloat(document.getElementById("quantity").value);
+      var cost = parseFloat(document.getElementById("cost").value);
+      
+      if (itemName !== "" && !isNaN(itemPrice) && !isNaN(quantity) && !isNaN(cost)) {
+        var tax = cost * 0.06;
+        var profit = (itemPrice * quantity) - (cost + tax);
+        
+        var item = {
+          name: itemName,
+          price: itemPrice,
+          quantity: quantity,
+          totalCost: cost + tax,
+          profit: profit
+        };
+        
+        var savedItems = localStorage.getItem("items");
+        var items = [];
+        if (savedItems) {
+          items = JSON.parse(savedItems);
+        }
+        
+        items.push(item);
+        localStorage.setItem("items", JSON.stringify(items));
+        
+        displayItems(items);
+        
+        document.getElementById("itemName").value = "";
+        document.getElementById("itemPrice").value = "";
+        document.getElementById("quantity").value = "";
+        document.getElementById("cost").value = "";
+        
+        alert("تمت إضافة العنصر بنجاح!");
+      } else {
+        alert("يرجى إدخال قيم صحيحة لجميع الحقول.");
+      }
+    }
+    
+    function displayItems(items) {
+      var itemList = document.getElementById("itemList");
+      itemList.innerHTML = "";
+      
+      for (var i = 0; i < items.length; i++) {
+        var item = items[i];
+        
+        var row = document.createElement("tr");
+        row.innerHTML = "<td>" + (i + 1) + "</td>" +
+                        "<td>" + item.name + "</td>" +
+                        "<td>" + item.price + "</td>" +
+                        "<td>" + item.quantity + "</td>" +
+                        "<td>" + item.totalCost + "</td>" +
+                        "<td>" + item.profit + "</td>";
+        
+        itemList.appendChild(row);
+      }
+    }
+    
+    function calculateTotalProfit() {
+  var savedItems = localStorage.getItem("items");
+  if (savedItems) {
+    var items = JSON.parse(savedItems);
+    var totalProfit = 0;
+    
+    for (var i = 0; i < items.length; i++) {
+      totalProfit += items[i].profit;
+    }
+    
+    document.getElementById("totalProfit").textContent = totalProfit.toFixed(0);
+  }
+}
+
+  </script>
+
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
