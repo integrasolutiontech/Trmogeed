@@ -24,11 +24,20 @@
 <body>
   <div class="container">
     <h1>حساب سعر الشحنة بعد الضريبة</h1>
-    <h3>بنك اسكندرية</h3>
     <form id="priceForm">
       <div class="form-group">
         <label for="itemPrice">سعر الشحنة:</label>
         <input type="number" class="form-control" id="itemPrice" required>
+      </div>
+      <div class="form-group">
+        <label for="bankSelect">البنك:</label>
+        <select class="form-control" id="bankSelect">
+          <option value="0.06">بنك اسكندرية</option>
+          <option value="0.10">بنك تيلدا</option>
+          <option value="0.08">بنك القاهرة</option>
+          <option value="0.1">بنك مصر</option>
+          <option value="0.12">بنك الأهلي</option>
+        </select>
       </div>
       <button type="submit" class="btn btn-success">حساب</button>
     </form>
@@ -39,12 +48,16 @@
   </div>
 <center>
   <h2>برعاية تراستيد مجرم</h2>
+  <h3>01140905700</h3> <br><br>
+
+  <h2>مطور التطبيق : 01101596210</h2>
 </center>
   <script>
     document.getElementById('priceForm').addEventListener('submit', function(event) {
       event.preventDefault();
       var itemPrice = parseFloat(document.getElementById('itemPrice').value);
-      var finalPrice = itemPrice + (itemPrice * 0.06);
+      var bankSelect = parseFloat(document.getElementById('bankSelect').value);
+      var finalPrice = itemPrice + (itemPrice * bankSelect);
       document.getElementById('finalPrice').textContent = finalPrice.toFixed(0);
       document.getElementById('result').style.display = 'block';
     });
